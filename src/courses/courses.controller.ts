@@ -1,10 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
-import { Course } from './schemas/course.schema';
+import { Course } from './schema/course.schema';
 
-@Controller('api/courses')
+@Controller('courses')
 export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
@@ -14,7 +22,7 @@ export class CoursesController {
   }
 
   @Get()
-  async findAll() : Promise<Course[]>{
+  async findAll(): Promise<Course[]> {
     return this.coursesService.findAll();
   }
 
