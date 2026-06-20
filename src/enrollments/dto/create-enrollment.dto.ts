@@ -1,16 +1,3 @@
-// import { IsNotEmpty, IsString } from 'class-validator';
-
-// export class CreateEnrollmentDto {
-//   @IsNotEmpty()
-//   @IsString()
-//   student_id?: string;
-
-//   @IsNotEmpty()
-//   @IsString()
-//   course_id?: string;
-// }
-
-
 import { IsNotEmpty, IsMongoId, IsNumber, IsOptional, Min, Max } from 'class-validator';
 
 export class CreateEnrollmentDto {
