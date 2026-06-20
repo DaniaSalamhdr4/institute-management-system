@@ -1,50 +1,64 @@
 import {
   Injectable,
-  BadRequestException,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { Enrollment } from './schemas/enrollments.schema';
+import { Enrollment } from './schema/enrollments.schema';
 import { CreateEnrollmentDto } from './dto/create-enrollment.dto';
-import { UpdateEnrollmentDto } from './dto/update-enrollment.dto';
+// import { User } from '../users/schema/user.schema';
+// import { Course } from 'src/courses/schemas/course.schema';
 
 @Injectable()
 export class EnrollmentsService {
   constructor(
     @InjectModel(Enrollment.name) private enrollmentModel: Model<Enrollment>,
+    // @InjectModel(User.name) private userModel: Model<User>,
+    // @InjectModel(Course.name) private courseModel: Model<any>,
   ) {}
 
-  //Create New Student
+  //Create New
   async create(createEnrollmentDto: CreateEnrollmentDto): Promise<Enrollment> {
-    const { student_id, course_id, grade } = createEnrollmentDto;
+    const { student_id, course_id } = createEnrollmentDto;
 
-    const existing = await this.enrollmentModel.findOne({
-      student_id: new Types.ObjectId(student_id),
-      course_id: new Types.ObjectId(course_id),
+    // const student = await this.userModel.findById(student_id);
+    // if (!student) {
+    //   throw new NotFoundException('Student noy exist');
+    // }
+    // if (student.role !== 'STUDENT') {
+    //   throw new BadRequestException('Invalid , User not student');
+    // }
+
+    // const course = await this.courseModel.findById(course_id);
+    // if (!course) {
+    //   throw new NotFoundException('Course not exist');
+    // }
+
+    const existingEnrollment = await this.enrollmentModel.findOne({
+      student_id,
+      course_id,
     });
-
-    if (existing) {
-      throw new BadRequestException('Student is exist');
+    if (existingEnrollment) {
+      throw new BadRequestException('Student already in course (Enrollment)');
     }
 
-    // 2. تمرير الـ grade هنا لحفظها في قاعدة البيانات (وإذا لم تُرسل ستأخذ القيمة null تلقائياً)
     const newEnrollment = new this.enrollmentModel({
       student_id: new Types.ObjectId(student_id),
       course_id: new Types.ObjectId(course_id),
-      grade: grade !== undefined ? grade : null,
+      grade: createEnrollmentDto.grade,
     });
 
-    return await newEnrollment.save();
+    return newEnrollment.save();
   }
 
-  //Get All Student
-  async findAll() {
+  //Get all Recourds
+  async findAll(): Promise<Enrollment[]> {
     try {
-      return await this.enrollmentModel
+      return this.enrollmentModel
         .find()
-        // .populate({ path: 'student_id', select: 'name email', strictPopulate: false })
-        // .populate({ path: 'course_id', select: 'course_name passing_grade', strictPopulate: false })
+        .populate('student_id')
+        .populate('course_id')
         .exec();
     } catch (error) {
       console.error('Error Get All :', (error as any).message);
@@ -52,53 +66,33 @@ export class EnrollmentsService {
     }
   }
 
-  // 2. جلب جميع التسجيلات وعرض كافة المعلومات المتعلقة بالطلاب والدورات بأمان
-  // async findAll() {
-  //   try {
-  //     const data = await this.enrollmentModel
-  //       .find()
-  //       .populate({ path: 'student_id', select: 'name email', strictPopulate: false })
-  //       .populate({ path: 'course_id', select: 'course_name passing_grade', strictPopulate: false })
-  //       .exec();
-
-  //     // نقوم بعمل فلترة لإرجاع التسجيلات التي تحتوي على كائنات سليمة فقط وتخطي البيانات القديمة التالفة
-  //     return data.filter(item => item && item.student_id && item.course_id);
-  //   } catch (error) {
-  //     console.error('Error Get All :', (error as any).message);
-  //     return [];
-  //   }
-  // }
-
   // Get All Courses For One Student
-  async findByStudent(studentId: string) {
-    return await this.enrollmentModel
-      .find({
-        student_id: new Types.ObjectId(studentId),
-      })
-      // .populate('course_id','course_name passing_grade')
+  async findByStudent(studentId: string): Promise<Enrollment[]> {
+    return this.enrollmentModel
+      .find({ student_id: new Types.ObjectId(studentId) })
+      .populate('course_id')
       .exec();
   }
 
-  // Delete student registration in course
-  async remove(id: string) {
-    const result = await this.enrollmentModel.findByIdAndDelete(id).exec();
-    if (!result) {
-      throw new NotFoundException('Not Exist');
-    }
-    return { message: 'successfully cancelled and deleted.' };
-  }
   // Update Grade
-  async updateGrade(id: string, updateGradeDto: UpdateEnrollmentDto) {
-    const updated = await this.enrollmentModel
-      .findByIdAndUpdate(id, { grade: updateGradeDto.grade }, { new: true })
-      .exec();
-
-    if (!updated) {
-      throw new NotFoundException(
-        'Registration dose not exist to modify Grade .',
-      );
+  async updateGrade(id: string, grade: number): Promise<Enrollment> {
+    const enrollment = await this.enrollmentModel.findByIdAndUpdate(
+      id,
+      { grade },
+      { new: true },
+    );
+    if (!enrollment) {
+      throw new NotFoundException('Enrollment not found');
     }
+    return enrollment;
+  }
 
-    return { message: 'Grade has been successfully updated .', data: updated };
+  // Delete
+  async remove(id: string): Promise<any> {
+    const result = await this.enrollmentModel.findByIdAndDelete(id);
+    if (!result) {
+      throw new NotFoundException('Enrollment not Exist');
+    }
+    return { message: 'Enrollment deleted successfuly' };
   }
 }
