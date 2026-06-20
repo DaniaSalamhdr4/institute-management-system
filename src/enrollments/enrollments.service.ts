@@ -25,7 +25,7 @@ export class EnrollmentsService {
     });
 
     if (existing) {
-      throw new BadRequestException('Student is existe');
+      throw new BadRequestException('Student is exist');
     }
 
     // 2. تمرير الـ grade هنا لحفظها في قاعدة البيانات (وإذا لم تُرسل ستأخذ القيمة null تلقائياً)
