@@ -5,17 +5,17 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { Enrollment } from './schema/enrollments.schema';
+import { Enrollment, EnrollmentDocument } from './schema/enrollments.schema';
 import { CreateEnrollmentDto } from './dto/create-enrollment.dto';
 import { User } from '../users/schema/user.schema';
-import { Course } from '../courses/schema/course.schema';
+import { Course, CourseDocument } from '../courses/schema/course.schema';
 
 @Injectable()
 export class EnrollmentsService {
   constructor(
-    @InjectModel(Enrollment.name) private enrollmentModel: Model<Enrollment>,
+    @InjectModel(Enrollment.name) private enrollmentModel: Model<EnrollmentDocument>,
     @InjectModel(User.name) private userModel: Model<User>,
-    @InjectModel(Course.name) private courseModel: Model<Course>,
+    @InjectModel(Course.name) private courseModel: Model<CourseDocument>,
   ) {}
 
   //Create New
