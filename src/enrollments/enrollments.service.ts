@@ -7,33 +7,33 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Enrollment } from './schema/enrollments.schema';
 import { CreateEnrollmentDto } from './dto/create-enrollment.dto';
-// import { User } from '../users/schema/user.schema';
-// import { Course } from 'src/courses/schemas/course.schema';
+import { User } from '../users/schema/user.schema';
+import { Course } from '../courses/schema/course.schema';
 
 @Injectable()
 export class EnrollmentsService {
   constructor(
     @InjectModel(Enrollment.name) private enrollmentModel: Model<Enrollment>,
-    // @InjectModel(User.name) private userModel: Model<User>,
-    // @InjectModel(Course.name) private courseModel: Model<any>,
+    @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(Course.name) private courseModel: Model<Course>,
   ) {}
 
   //Create New
   async create(createEnrollmentDto: CreateEnrollmentDto): Promise<Enrollment> {
     const { student_id, course_id } = createEnrollmentDto;
 
-    // const student = await this.userModel.findById(student_id);
-    // if (!student) {
-    //   throw new NotFoundException('Student noy exist');
-    // }
-    // if (student.role !== 'STUDENT') {
-    //   throw new BadRequestException('Invalid , User not student');
-    // }
+    const student = await this.userModel.findById(student_id);
+    if (!student) {
+      throw new NotFoundException('Student noy exist');
+    }
+    if (student.role !== 'STUDENT') {
+      throw new BadRequestException('Invalid , User not student');
+    }
 
-    // const course = await this.courseModel.findById(course_id);
-    // if (!course) {
-    //   throw new NotFoundException('Course not exist');
-    // }
+    const Course = await this.courseModel.findById(course_id);
+    if (!Course) {
+      throw new NotFoundException('Course not exist');
+    }
 
     const existingEnrollment = await this.enrollmentModel.findOne({
       student_id,
