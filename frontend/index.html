@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>نظام إدارة المعهد التعليمي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+  <!-- ===== LOGIN PAGE ===== -->
+  <div id="loginPage">
+    <div class="login-box">
+      <div class="logo">
+        <i class="fas fa-graduation-cap"></i>
+        <h1>نظام المعهد التعليمي</h1>
+        <p>تسجيل الدخول إلى لوحة التحكم</p>
+      </div>
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>البريد الإلكتروني</label>
+          <input type="email" id="loginEmail" placeholder="admin@institute.com" value="admin@institute.com" required />
+        </div>
+        <div class="form-group">
+          <label>كلمة المرور</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" value="admin123" required />
+        </div>
+        <div class="form-group">
+          <label>نوع الحساب</label>
+          <select id="loginRole">
+            <option value="admin">مدير</option>
+            <option value="teacher">أستاذ</option>
+            <option value="student">طالب</option>
+          </select>
+        </div>
+        <div id="loginError" class="login-error">بيانات الدخول غير صحيحة. يرجى المحاولة مرة أخرى.</div>
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top:8px;" id="loginBtn">
+          <i class="fas fa-sign-in-alt"></i> دخول
+        </button>
+      </form>
+      <div style="margin-top:16px;text-align:center;font-size:0.8rem;color:var(--gray-400);">
+        <p>للاختبار: admin@institute.com / admin123</p>
+        <p>teacher@institute.com / teacher123 &bull; student@institute.com / student123</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== APP ===== -->
+  <div id="app">
+    <!-- Sidebar Overlay (mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <i class="fas fa-graduation-cap"></i>
+        <span>المعهد التعليمي</span>
+      </div>
+      <div class="sidebar-user">
+        <div class="avatar" id="sidebarAvatar">A</div>
+        <div class="user-info">
+          <div class="name" id="sidebarName">Admin</div>
+          <div class="role" id="sidebarRole">مدير</div>
+        </div>
+      </div>
+      <nav class="sidebar-nav" id="sidebarNav">
+        <!-- Dynamic nav items rendered by JS -->
+      </nav>
+      <div class="sidebar-footer">
+        <button onclick="logout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <header class="topbar">
+        <button class="hamburger" onclick="toggleSidebar()">
+          <i class="fas fa-bars"></i>
+        </button>
+        <h2 class="page-title" id="pageTitle">لوحة التحكم</h2>
+        <div class="topbar-actions">
+          <span class="badge" id="topbarRole">مدير</span>
+          <span class="api-status" id="apiStatus">
+            <span class="dot" id="apiDot"></span>
+            <span id="apiStatusText">جاري التحقق...</span>
+          </span>
+        </div>
+      </header>
+
+      <!-- Page Content -->
+      <div class="page-content" id="pageContent">
+        <!-- Rendered dynamically -->
+      </div>
+    </main>
+  </div>
+
+  <!-- ===== MODAL CONTAINER ===== -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modalContent">
+      <!-- Dynamic content -->
+    </div>
+  </div>
+
+  <!-- ===== TOAST CONTAINER ===== -->
+  <div class="toast-container" id="toastContainer"></div>
+
+<script src="./js/main.js"></script>
+</body>
+</html>
