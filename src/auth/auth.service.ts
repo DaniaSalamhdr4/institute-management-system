@@ -1,59 +1,51 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-
+import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-
-import * as bcrypt from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
-import { User } from '../users/schema/user.schema';
-import { LoginDto } from './dto/login.dto';
+import { User } from '../users/schema/user.schema'; // تأكد من المسار الصحيح للـ Schema لديك
+import * as bcrypt from 'bcrypt'; // إذا كنت تستخدم التشفير لكلمات المرور
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(User.name)
-    private userModel: Model<User>,
-
-    private jwtService: JwtService,
+    @InjectModel(User.name) private userModel: Model<User>,
+    private jwtService: JwtService, // حقن خدمة الـ JWT المدمجة
   ) {}
 
-  async login(loginDto: LoginDto) {
+  async login(loginDto: any) {
     const { email, password } = loginDto;
 
-    // Find User
-    const user = await this.userModel.findOne({
-      email,
-    });
-
+    // 1. البحث عن المستخدم في قاعدة البيانات عبر البريد الإلكتروني
+    const user = await this.userModel.findOne({ email });
     if (!user) {
-      throw new UnauthorizedException('Invalid email');
+      throw new UnauthorizedException(
+        'البريد الإلكتروني أو كلمة المرور غير صحيحة',
+      );
     }
 
-    // Compare Password
+    // 2. التحقق من صحة كلمة المرور (مقارنة مشفرة)
     const isPasswordValid = await bcrypt.compare(password, user.password);
-
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid password');
+      throw new UnauthorizedException(
+        'البريد الإلكتروني أو كلمة المرور غير صحيحة',
+      );
     }
 
-    // JWT Payload
+    // 3. تجهيز بيانات الـ Payload الحساسة وتضمين الـ role
     const payload = {
       sub: user._id,
-      role: user.role,
       email: user.email,
+      role: user.role, // هامة جداً: لتمريرها لحارس الصلاحيات وتفعيل نظام الحماية
     };
 
-    // Generate Token
-    const accessToken = this.jwtService.sign(payload);
-
+    // 4. إنشاء الـ Token وإرجاعه مع بيانات المستخدم الأساسية
     return {
-      message: 'Login successful',
-      access_token: accessToken,
+      access_token: this.jwtService.sign(payload),
       user: {
         id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role,
+        role: user.role, // إرجاع الدور للـ Frontend لبناء واجهات مخصصة
       },
     };
   }
