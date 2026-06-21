@@ -13,7 +13,8 @@ import { Course, CourseDocument } from '../courses/schema/course.schema';
 @Injectable()
 export class EnrollmentsService {
   constructor(
-    @InjectModel(Enrollment.name) private enrollmentModel: Model<EnrollmentDocument>,
+    @InjectModel(Enrollment.name)
+    private enrollmentModel: Model<EnrollmentDocument>,
     @InjectModel(User.name) private userModel: Model<User>,
     @InjectModel(Course.name) private courseModel: Model<CourseDocument>,
   ) {}
@@ -49,7 +50,7 @@ export class EnrollmentsService {
       grade: createEnrollmentDto.grade,
     });
 
-    return newEnrollment.save();
+    return await newEnrollment.save();
   }
 
   //Get all Recourds
