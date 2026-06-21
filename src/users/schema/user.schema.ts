@@ -21,13 +21,12 @@ export class User {
   registration_year!: number;
 
   @Prop()
-  specialization!: string;  
-  
+  specialization!: string;
+
   @Prop({
     enum: ['ADMIN', 'TEACHER', 'STUDENT'],
   })
   role!: string;
 }
 
-export const UserSchema =
-SchemaFactory.createForClass(User);
+export const UserSchema = SchemaFactory.createForClass(User);

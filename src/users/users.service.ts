@@ -8,7 +8,7 @@ import { Model, Types } from 'mongoose';
 import { User, UserDocument } from './schema/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
@@ -16,7 +16,11 @@ export class UsersService {
   //Create user
   async create(createUserDto: CreateUserDto): Promise<User> {
     try {
-      const newUser = new this.userModel(createUserDto);
+      const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+      const newUser = new this.userModel({
+        ...createUserDto,
+        password: hashedPassword,
+      });
       return await newUser.save();
     } catch (error: any) {
       if (error.code === 11000) {
