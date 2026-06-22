@@ -1,114 +1,593 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>نظام إدارة المعهد التعليمي</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-<link rel="stylesheet" href="./css/style.css">
-</head>
-<body>
-
-  <!-- ===== LOGIN PAGE ===== -->
-  <div id="loginPage">
-    <div class="login-box">
-      <div class="logo">
-        <i class="fas fa-graduation-cap"></i>
-        <h1>نظام المعهد التعليمي</h1>
-        <p>تسجيل الدخول إلى لوحة التحكم</p>
-      </div>
-      <form id="loginForm" onsubmit="handleLogin(event)">
-        <div class="form-group">
-          <label>البريد الإلكتروني</label>
-          <input type="email" id="loginEmail" placeholder="admin@institute.com" value="admin@institute.com" required />
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduCore — Institute Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <!-- LOGIN -->
+    <div id="loginView">
+      <div class="login-card">
+        <div class="login-logo">
+          <div class="big-icon">🎓</div>
+          <h1>Edu<span>Core</span></h1>
+          <p>Institute Management System</p>
         </div>
         <div class="form-group">
-          <label>كلمة المرور</label>
-          <input type="password" id="loginPassword" placeholder="••••••••" value="admin123" required />
+          <label>Email Address</label>
+          <input
+            type="email"
+            id="loginEmail"
+            placeholder="you@institution.edu"
+            autocomplete="email"
+          />
         </div>
         <div class="form-group">
-          <label>نوع الحساب</label>
-          <select id="loginRole">
-            <option value="admin">مدير</option>
-            <option value="teacher">أستاذ</option>
-            <option value="student">طالب</option>
-          </select>
+          <label>Password</label>
+          <input
+            type="password"
+            id="loginPassword"
+            placeholder="••••••••"
+            autocomplete="current-password"
+          />
         </div>
-        <div id="loginError" class="login-error">بيانات الدخول غير صحيحة. يرجى المحاولة مرة أخرى.</div>
-        <button type="submit" class="btn btn-primary btn-block" style="margin-top:8px;" id="loginBtn">
-          <i class="fas fa-sign-in-alt"></i> دخول
+        <button
+          class="btn btn-primary btn-full"
+          id="loginBtn"
+          style="margin-top: 8px"
+        >
+          Sign In
         </button>
-      </form>
-      <div style="margin-top:16px;text-align:center;font-size:0.8rem;color:var(--gray-400);">
-        <p>للاختبار: admin@institute.com / admin123</p>
-        <p>teacher@institute.com / teacher123 &bull; student@institute.com / student123</p>
+        <p
+          class="text-muted"
+          style="text-align: center; margin-top: 16px; font-size: 0.8rem"
+        >
+          Admin / Teacher / Student credentials accepted
+        </p>
       </div>
     </div>
-  </div>
 
-  <!-- ===== APP ===== -->
-  <div id="app">
-    <!-- Sidebar Overlay (mobile) -->
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <!-- DASHBOARD -->
+    <div id="app" style="display: none">
+      <div id="sidebarOverlay"></div>
 
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-brand">
-        <i class="fas fa-graduation-cap"></i>
-        <span>المعهد التعليمي</span>
-      </div>
-      <div class="sidebar-user">
-        <div class="avatar" id="sidebarAvatar">A</div>
-        <div class="user-info">
-          <div class="name" id="sidebarName">Admin</div>
-          <div class="role" id="sidebarRole">مدير</div>
+      <!-- SIDEBAR -->
+      <nav id="sidebar">
+        <div class="sidebar-logo">
+          <div class="icon">🎓</div>
+          <div class="name">Edu<span>Core</span></div>
         </div>
-      </div>
-      <nav class="sidebar-nav" id="sidebarNav">
-        <!-- Dynamic nav items rendered by JS -->
+        <div class="sidebar-user">
+          <div class="avatar" id="sidebarAvatar">?</div>
+          <div class="info">
+            <div class="uname" id="sidebarName">—</div>
+            <div class="urole" id="sidebarRole">—</div>
+          </div>
+        </div>
+        <div class="sidebar-nav" id="sidebarNav"></div>
+        <div class="sidebar-footer">
+          <button class="btn-logout" id="logoutBtn">🚪 Sign Out</button>
+        </div>
       </nav>
-      <div class="sidebar-footer">
-        <button onclick="logout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
-      </div>
-    </aside>
 
-    <!-- Main Content -->
-    <main class="main-content">
-      <!-- Top Bar -->
-      <header class="topbar">
-        <button class="hamburger" onclick="toggleSidebar()">
-          <i class="fas fa-bars"></i>
-        </button>
-        <h2 class="page-title" id="pageTitle">لوحة التحكم</h2>
-        <div class="topbar-actions">
-          <span class="badge" id="topbarRole">مدير</span>
-          <span class="api-status" id="apiStatus">
-            <span class="dot" id="apiDot"></span>
-            <span id="apiStatusText">جاري التحقق...</span>
-          </span>
+      <!-- MAIN -->
+      <div id="main">
+        <div id="topbar">
+          <button class="hamburger" id="hamburger">☰</button>
+          <h1 id="pageTitle">Dashboard</h1>
+          <div class="topbar-badge" id="roleBadge">—</div>
         </div>
-      </header>
+        <div id="content">
+          <!-- ADMIN VIEWS -->
+          <div class="view" id="view-overview">
+            <div class="stats-grid" id="overviewStats"></div>
+            <div class="col-2">
+              <div class="section-card">
+                <div class="section-head"><h2>📋 Recent Courses</h2></div>
+                <div class="section-body">
+                  <div class="tbl-wrap">
+                    <table id="recentCoursesTable">
+                      <thead>
+                        <tr>
+                          <th>Course</th>
+                          <th>Teacher</th>
+                          <th>Passing</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="loading-row">
+                          <td colspan="3"><div class="spinner"></div></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="section-card" id="recentUsersSection">
+                <div class="section-head"><h2>👥 Recent Users</h2></div>
+                <div class="section-body">
+                  <div class="tbl-wrap">
+                    <table id="recentUsersTable">
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Role</th>
+                          <th>Email</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="loading-row">
+                          <td colspan="3"><div class="spinner"></div></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <!-- Page Content -->
-      <div class="page-content" id="pageContent">
-        <!-- Rendered dynamically -->
+          <div class="view" id="view-users">
+            <div class="section-card">
+              <div class="section-head">
+                <h2>All Users</h2>
+                <button
+                  class="btn btn-primary btn-sm"
+                  onclick="openModal('createUserModal')"
+                >
+                  ＋ New User
+                </button>
+              </div>
+              <div class="section-body">
+                <div class="tabs">
+                  <div
+                    class="tab active"
+                    data-tab="all-users"
+                    onclick="filterUsers('all')"
+                  >
+                    All
+                  </div>
+                  <div
+                    class="tab"
+                    data-tab="teachers-tab"
+                    onclick="filterUsers('TEACHER')"
+                  >
+                    Teachers
+                  </div>
+                  <div
+                    class="tab"
+                    data-tab="students-tab"
+                    onclick="filterUsers('STUDENT')"
+                  >
+                    Students
+                  </div>
+                </div>
+                <div class="tbl-wrap">
+                  <table id="usersTable">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Phone</th>
+                        <th>Reg. Year</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="loading-row">
+                        <td colspan="6"><div class="spinner"></div></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="view" id="view-courses">
+            <div class="section-card">
+              <div class="section-head">
+                <h2>Courses</h2>
+                <button
+                  class="btn btn-primary btn-sm"
+                  onclick="openModal('createCourseModal')"
+                >
+                  ＋ New Course
+                </button>
+              </div>
+              <div class="section-body">
+                <div class="tbl-wrap">
+                  <table id="coursesTable">
+                    <thead>
+                      <tr>
+                        <th>Course Name</th>
+                        <th>Teacher</th>
+                        <th>Passing Grade</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="loading-row">
+                        <td colspan="4"><div class="spinner"></div></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="view" id="view-enrollments">
+            <div class="section-card">
+              <div class="section-head">
+                <h2>Enrollments</h2>
+                <button
+                  class="btn btn-primary btn-sm"
+                  onclick="openModal('createEnrollModal')"
+                >
+                  ＋ Enroll Student
+                </button>
+              </div>
+              <div class="section-body">
+                <div class="tbl-wrap">
+                  <table id="enrollmentsTable">
+                    <thead>
+                      <tr>
+                        <th>Student</th>
+                        <th>Course</th>
+                        <th>Grade</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="loading-row">
+                        <td colspan="5"><div class="spinner"></div></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="view" id="view-statistics">
+            <div class="stats-grid" id="statsGrid"></div>
+            <div class="col-2">
+              <div class="section-card">
+                <div class="section-head"><h2>📈 Students per Course</h2></div>
+                <div class="section-body" id="statsPerCourse"></div>
+              </div>
+              <div class="section-card">
+                <div class="section-head"><h2>📅 Students per Year</h2></div>
+                <div class="section-body" id="statsPerYear"></div>
+              </div>
+            </div>
+            <div class="section-card">
+              <div class="section-head"><h2>🏆 Course Success Rates</h2></div>
+              <div class="section-body" id="statsSuccess"></div>
+            </div>
+          </div>
+
+          <!-- TEACHER VIEWS -->
+          <div class="view" id="view-my-courses">
+            <div class="section-card">
+              <div class="section-head"><h2>My Courses</h2></div>
+              <div class="section-body">
+                <div class="tbl-wrap">
+                  <table id="myCoursesTable">
+                    <thead>
+                      <tr>
+                        <th>Course Name</th>
+                        <th>Students</th>
+                        <th>Passing Grade</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="loading-row">
+                        <td colspan="3"><div class="spinner"></div></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="view" id="view-my-students">
+            <div class="section-card">
+              <div class="section-head"><h2>My Students</h2></div>
+              <div class="section-body">
+                <div class="tbl-wrap">
+                  <table id="myStudentsTable">
+                    <thead>
+                      <tr>
+                        <th>Student</th>
+                        <th>Course</th>
+                        <th>Grade</th>
+                        <th>Status</th>
+                        <th>Update Grade</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="loading-row">
+                        <td colspan="5"><div class="spinner"></div></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STUDENT VIEWS -->
+          <div class="view" id="view-my-enrollments">
+            <div class="section-card">
+              <div class="section-head"><h2>My Courses</h2></div>
+              <div class="section-body">
+                <div class="tbl-wrap">
+                  <table id="myEnrollmentsTable">
+                    <thead>
+                      <tr>
+                        <th>Course</th>
+                        <th>Teacher</th>
+                        <th>Grade</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="loading-row">
+                        <td colspan="4"><div class="spinner"></div></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /content -->
       </div>
-    </main>
-  </div>
-
-  <!-- ===== MODAL CONTAINER ===== -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal" id="modalContent">
-      <!-- Dynamic content -->
+      <!-- /main -->
     </div>
-  </div>
+    <!-- /app -->
 
-  <!-- ===== TOAST CONTAINER ===== -->
-  <div class="toast-container" id="toastContainer"></div>
+    <!-- MODALS -->
 
-<script src="./js/main.js"></script>
-</body>
+    <!-- Create User -->
+    <div class="modal-overlay" id="createUserModal">
+      <div class="modal">
+        <div class="modal-head">
+          <h3>Create User</h3>
+          <button
+            class="btn btn-ghost btn-sm btn-icon"
+            onclick="closeModal('createUserModal')"
+          >
+            ✕
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Full Name</label
+            ><input type="text" id="cu-name" placeholder="John Doe" />
+          </div>
+          <div class="form-group">
+            <label>Email</label
+            ><input type="email" id="cu-email" placeholder="john@edu.com" />
+          </div>
+          <div class="form-group">
+            <label>Password</label
+            ><input type="password" id="cu-pass" placeholder="••••••" />
+          </div>
+          <div class="form-group">
+            <label>Role</label>
+            <select id="cu-role" onchange="toggleRoleFields()">
+              <option value="ADMIN">Admin</option>
+              <option value="TEACHER">Teacher</option>
+              <option value="STUDENT">Student</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Phone</label
+            ><input type="text" id="cu-phone" placeholder="0123456789" />
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <label>Registration Year</label
+              ><input type="number" id="cu-year" placeholder="2024" />
+            </div>
+            <div class="form-group" id="cu-spec-wrap">
+              <label>Specialization</label
+              ><input type="text" id="cu-spec" placeholder="Mathematics" />
+            </div>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn btn-ghost" onclick="closeModal('createUserModal')">
+            Cancel
+          </button>
+          <button class="btn btn-primary" onclick="createUser()">
+            Create User
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create Course -->
+    <div class="modal-overlay" id="createCourseModal">
+      <div class="modal">
+        <div class="modal-head">
+          <h3>Create Course</h3>
+          <button
+            class="btn btn-ghost btn-sm btn-icon"
+            onclick="closeModal('createCourseModal')"
+          >
+            ✕
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Course Name</label
+            ><input
+              type="text"
+              id="cc-name"
+              placeholder="Advanced Mathematics"
+            />
+          </div>
+          <div class="form-group">
+            <label>Teacher</label
+            ><select id="cc-teacher">
+              <option value="">— Select Teacher —</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Passing Grade</label
+            ><input
+              type="number"
+              id="cc-grade"
+              placeholder="60"
+              min="0"
+              max="100"
+            />
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button
+            class="btn btn-ghost"
+            onclick="closeModal('createCourseModal')"
+          >
+            Cancel
+          </button>
+          <button class="btn btn-primary" onclick="createCourse()">
+            Create Course
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Course -->
+    <div class="modal-overlay" id="editCourseModal">
+      <div class="modal">
+        <div class="modal-head">
+          <h3>Edit Course</h3>
+          <button
+            class="btn btn-ghost btn-sm btn-icon"
+            onclick="closeModal('editCourseModal')"
+          >
+            ✕
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="ec-id" />
+          <div class="form-group">
+            <label>Course Name</label><input type="text" id="ec-name" />
+          </div>
+          <div class="form-group">
+            <label>Passing Grade</label
+            ><input type="number" id="ec-grade" min="0" max="100" />
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn btn-ghost" onclick="closeModal('editCourseModal')">
+            Cancel
+          </button>
+          <button class="btn btn-primary" onclick="updateCourse()">
+            Save Changes
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create Enrollment -->
+    <div class="modal-overlay" id="createEnrollModal">
+      <div class="modal">
+        <div class="modal-head">
+          <h3>Enroll Student</h3>
+          <button
+            class="btn btn-ghost btn-sm btn-icon"
+            onclick="closeModal('createEnrollModal')"
+          >
+            ✕
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Student</label
+            ><select id="en-student">
+              <option value="">— Select Student —</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Course</label
+            ><select id="en-course">
+              <option value="">— Select Course —</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button
+            class="btn btn-ghost"
+            onclick="closeModal('createEnrollModal')"
+          >
+            Cancel
+          </button>
+          <button class="btn btn-primary" onclick="createEnrollment()">
+            Enroll
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Update Grade -->
+    <div class="modal-overlay" id="updateGradeModal">
+      <div class="modal">
+        <div class="modal-head">
+          <h3>Update Grade</h3>
+          <button
+            class="btn btn-ghost btn-sm btn-icon"
+            onclick="closeModal('updateGradeModal')"
+          >
+            ✕
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="ug-id" />
+          <div class="form-group">
+            <label>Grade (0–100)</label
+            ><input
+              type="number"
+              id="ug-grade"
+              min="0"
+              max="100"
+              placeholder="85"
+            />
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button
+            class="btn btn-ghost"
+            onclick="closeModal('updateGradeModal')"
+          >
+            Cancel
+          </button>
+          <button class="btn btn-primary" onclick="updateGrade()">
+            Update
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div id="toast-container"></div>
+
+    <script src="./js/main.js"></script>
+  </body>
 </html>
