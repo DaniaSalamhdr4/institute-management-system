@@ -599,7 +599,10 @@ async function loadStatistics() {
 
   // Totals
   const totalStudents = Array.isArray(perCourse)
-    ? perCourse.reduce((a, c) => a + (c.count || c.studentCount || 0), 0)
+    ? perCourse.reduce(
+        (a, c) => a + (c.studentsCount || c.studentCount || c.count || 0),
+        0,
+      )
     : 0;
   const avgSuccess = Array.isArray(successRate)
     ? Math.round(
@@ -622,10 +625,10 @@ async function loadStatistics() {
     Array.isArray(perCourse) && perCourse.length
       ? perCourse
           .map((c) => {
-            const count = c.count || c.studentCount || 0;
+            const count = c.studentsCount || c.studentCount || c.count || 0;
             return `<div style="margin-bottom:14px;">
           <div class="flex items-center gap-2" style="margin-bottom:6px;justify-content:space-between;">
-            <span class="fw-600 text-sm">${c.course_name || c._id || '—'}</span>
+            <span class="fw-600 text-sm">${c.courseName || c.course_name || c._id || '—'}</span>
             <span class="mono text-sm" style="color:var(--primary)">${count}</span>
           </div>
           <div class="prog-bar"><div class="prog-fill" style="width:${(count / maxCount) * 100}%;background:var(--primary)"></div></div>
@@ -637,7 +640,7 @@ async function loadStatistics() {
   // Per year
   document.getElementById('statsPerYear').innerHTML =
     Array.isArray(perYear) && perYear.length
-      ? `<div class="tbl-wrap"><table><thead><tr><th>Year</th><th>Students</th></tr></thead><tbody>${perYear.map((y) => `<tr><td class="fw-600">${y._id || y.year || '—'}</td><td><span class="pill pill-amber">${y.count || y.studentCount || 0}</span></td></tr>`).join('')}</tbody></table></div>`
+      ? `<div class="tbl-wrap"><table><thead><tr><th>Year</th><th>Students</th></tr></thead><tbody>${perYear.map((y) => `<tr><td class="fw-600">${y._id || y.year || '—'}</td><td><span class="pill pill-amber">${y.studentsCount || y.studentCount || y.count || 0}</span></td></tr>`).join('')}</tbody></table></div>`
       : '<div class="empty-state"><div class="ico">📅</div><p>No data available</p></div>';
 
   // Success rate
@@ -653,7 +656,7 @@ async function loadStatistics() {
                   ? 'var(--amber)'
                   : 'var(--rose)';
             return `<tr>
-          <td class="fw-600">${s.course_name || s._id || '—'}</td>
+          <td class="fw-600">${s.courseName || s.course_name || s._id || '—'}</td>
           <td><span style="color:${color};font-weight:700;font-family:var(--mono)">${rate}%</span></td>
           <td style="width:200px"><div class="prog-bar"><div class="prog-fill" style="width:${rate}%;background:${color}"></div></div></td>
         </tr>`;
