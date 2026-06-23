@@ -1,0 +1,519 @@
+{
+  "info": {
+    "_postman_id": "46c5c5e9-da7e-476e-ab0e-f8b89e887b2d",
+    "name": "Institute Management System API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54995283",
+    "_collection_link": "https://go.postman.co/collection/54995283-46c5c5e9-da7e-476e-ab0e-f8b89e887b2d?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "users",
+      "item": [
+        {
+          "name": "get all users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create user",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/users ",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "users "
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get user by id",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "get teachers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/users/teachers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "users",
+                "teachers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create teacher",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Ahmed\",\r\n  \"email\": \"ahmed@test.com\",\r\n  \"password\": \"123456\",\r\n  \"role\": \"TEACHER\",\r\n  \"phone\":\"0369821447\",\r\n \"registration_year\":2006,\r\n \"specialization\":\"math\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get students",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/users/students",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "users",
+                "students"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create student",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Dania\",\r\n  \"email\": \"daina@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"role\": \"STUDENT\",\r\n  \"phone\":\"0369821447\",\r\n \"registration_year\":2008,\r\n \"specialization\":\"math\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "enrollment",
+      "item": [
+        {
+          "name": "get all enrollments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/enrollments",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "enrollments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create enrollment",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"student_id\": \"6a38f11fb8d9e0027b4a3c49\",\r\n  \"course_id\": \"6a38f18fb8d9e0027b4a3c4a\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/enrollments",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "enrollments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update grade",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"grade\": 85\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/enrollments/6a38f1b4b8d9e0027b4a3c4b/grade",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "enrollments",
+                "6a38f1b4b8d9e0027b4a3c4b",
+                "grade"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete enrollment",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/enrollments/6a38f1b4b8d9e0027b4a3c4b",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "enrollments",
+                "6a38f1b4b8d9e0027b4a3c4b"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get enrollment by student id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/enrollments/student/6a38f11fb8d9e0027b4a3c49",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "enrollments",
+                "student",
+                "6a38f11fb8d9e0027b4a3c49"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "log in",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"fadia2@gmail.com\",\r\n  \"password\": \"123456\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "courses",
+      "item": [
+        {
+          "name": "get all courses",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": " {{bearer_token_1as1}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/courses",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "courses"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create course",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{bearer_token_1as1}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"course_name\": \"NestJS\",\r\n  \"teacher_id\": \"6a38f077b8d9e0027b4a3c48\",\r\n  \"passing_grade\": 60\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/courses",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "courses"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "edit course",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"Advanced NestJS\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/courses/6a38ededb8d9e0027b4a3c45",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "courses",
+                "6a38ededb8d9e0027b4a3c45"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete course",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/courses/6a38efadbef2b741a5da8df7",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "courses",
+                "6a38efadbef2b741a5da8df7"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get course bu id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/courses/6a38f18fb8d9e0027b4a3c4a",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "courses",
+                "6a38f18fb8d9e0027b4a3c4a"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "statistics",
+      "item": [
+        {
+          "name": "Students Per Course",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/statistics/students-per-course",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "statistics",
+                "students-per-course"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Students Per Year",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/statistics/students-per-year",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "statistics",
+                "students-per-year"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Success Rate",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/statistics/course-success-rate",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "statistics",
+                "course-success-rate"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "bearer_token_1as1",
+      "secret": true
+    }
+  ]
+}
